@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Back to Church Sunday — Versailles UMC</title>
+  <meta name="description" content="You're invited! Join us this Sunday at Versailles UMC. Watch a short welcome from our pastors, then tap to see events, groups, and next steps." />
+  <meta property="og:title" content="Back to Church Sunday — Versailles UMC" />
+  <meta property="og:description" content="You're invited! Join us this Sunday at Versailles UMC." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/assets/og-image.jpg" />
+  <meta property="og:url" content="https://visit.versaillesumc.org/backtochurch" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <style>
+    :root{
+      --brand:#0b5fff;
+      --bg:#0b1220;
+      --text:#f6f8ff;
+      --muted:#b7c2e1;
+      --card:#111a2eEE;
+      --accent:#19c37d;
+      --radius:18px;
+    }
+    html,body{height:100%}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color:var(--text); background: radial-gradient(1200px 500px at 50% -10%, #20305c66 0%, transparent 60%), linear-gradient(#0b1220, #0a1020);
+      -webkit-font-smoothing: antialiased; line-height:1.6;
+      display:flex; flex-direction:column; min-height:100vh;
+    }
+    header{padding:20px 16px 8px; display:flex; align-items:center; gap:12px; justify-content:center}
+    header img{height:40px; width:auto}
+    header .h{text-align:center}
+    h1{margin:0; font-size:clamp(1.25rem, 1rem + 1.2vw, 2rem); letter-spacing:.2px}
+    .sub{color:var(--muted); font-size:.95rem; margin-top:2px}
+
+    .wrap{width:min(1100px, 92vw); margin:0 auto; padding:8px 0 36px; flex:1;}
+
+    .player-box{position:relative; aspect-ratio:16/9; background:#000; border-radius: var(--radius); overflow:hidden; box-shadow:0 10px 40px #0008}
+    #player{position:absolute; inset:0}
+
+    .cta{position:absolute; inset:auto 0 0 0; transform:translateY(100%); opacity:0; pointer-events:none; transition:.5s ease;}
+    .cta.show{transform:translateY(0); opacity:1; pointer-events:auto}
+    .cta .card{
+      background: linear-gradient(180deg, #0b1220cc, #0b1220ee 60%, #0b1220ff), radial-gradient(800px 300px at 50% -10%, #345 0%, transparent 60%);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-top-left-radius: var(--radius); border-top-right-radius: var(--radius);
+      padding:18px 16px 20px; border:1px solid #2a3a66;
+    }
+
+    .card h2{margin:0 0 4px; font-size: clamp(1.1rem, .9rem + .9vw, 1.6rem)}
+    .card p{margin:0 0 12px; color:var(--muted)}
+    .buttons{display:grid; grid-template-columns: 1fr; gap:10px}
+
+    .btn{
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      text-decoration:none; color:white; font-weight:600; padding:14px 16px;
+      border-radius:12px; border:1px solid #2a3a66; background: #14224a; transition:.2s ease; text-align:center
+    }
+    .btn:hover{transform: translateY(-1px); box-shadow:0 6px 18px #0005}
+    .btn.primary{background:linear-gradient(180deg, var(--brand), #0a4fe0); border-color:#0a49d5}
+
+    footer{padding:22px 16px 40px; text-align:center; color:#9fb0da; font-size:.9rem}
+    .disclaimer{opacity:.85}
+
+    .start{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg, #0008, #0004);}
+    .play{appearance:none; border:0; background: white; color:#000; width:70px; height:70px; border-radius:50%; display:grid; place-items:center; box-shadow:0 10px 30px #0008; cursor:pointer}
+    .play:after{content:""; width:0; height:0; border-left:18px solid #000; border-top:12px solid transparent; border-bottom:12px solid transparent; margin-left:4px}
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+  </style>
+</head>
+<body>
+  <header>
+    <img src="/assets/vumc-logo.svg" alt="Versailles UMC" onerror="this.style.display='none'" />
+    <div class="h">
+      <h1>Back to Church Sunday</h1>
+      <div class="sub">A quick hello from our pastors — then tap to see what’s next at VUMC.</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="player-box" aria-label="Invitation Video">
+      <div id="player"></div>
+      <div class="start" id="starter">
+        <button class="play" id="playBtn" aria-label="Play video"></button>
+        <span class="sr-only">Tap play to watch the invitation video</span>
+      </div>
+      <div class="cta" id="cta">
+        <div class="card">
+          <h2>You're invited — what's next?</h2>
+          <p>Plan your visit, explore groups, and see what’s happening at Versailles UMC.</p>
+          <div class="buttons" id="ctaButtons"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="disclaimer">Questions? <a href="mailto:info@versaillesumc.org" style="color:#dbe6ff">Email us</a>. Sunday services: 9:30a (Traditional) & 10:30a (Contemporary).</div>
+  </footer>
+
+  <script>
+    const CONFIG = {
+      videoSrc: "https://archive.org/download/the-good-work/the-good-work.mp4",
+      poster: "/assets/backtochurch-poster.jpg",
+      showCtaAtSeconds: 35,
+      buttons: [
+        { label: "See What's Happening", href: "https://connect.versaillesumc.org/back-to-church-sunday" }
+      ],
+      defaultUtm: { utm_source: 'doorhanger', utm_medium: 'qr', utm_campaign: 'back_to_church_2025' }
+    };
+
+    function withParams(url, params){
+      const u = new URL(url);
+      Object.entries(params).forEach(([k,v]) => { if(v!=null) u.searchParams.set(k, v) });
+      return u.toString();
+    }
+
+    const inbound = new URL(location.href);
+    const tracking = {
+      utm_source: inbound.searchParams.get('utm_source') || inbound.searchParams.get('src') || CONFIG.defaultUtm.utm_source,
+      utm_medium: inbound.searchParams.get('utm_medium') || CONFIG.defaultUtm.utm_medium,
+      utm_campaign: inbound.searchParams.get('utm_campaign') || CONFIG.defaultUtm.utm_campaign
+    };
+
+    const btnWrap = document.getElementById('ctaButtons');
+    CONFIG.buttons.forEach(b => {
+      const a = document.createElement('a');
+      a.className = 'btn primary';
+      a.href = withParams(b.href, tracking);
+      a.textContent = b.label;
+      a.setAttribute('role','button');
+      a.setAttribute('aria-label', b.label);
+      btnWrap.appendChild(a);
+    });
+
+    const playerHost = document.getElementById('player');
+    const vid = document.createElement('video');
+    vid.id = 'vid';
+    vid.setAttribute('playsinline', '');
+    vid.setAttribute('preload', 'metadata');
+    vid.setAttribute('poster', CONFIG.poster || '');
+    vid.src = CONFIG.videoSrc;
+    vid.style.width = '100%';
+    vid.style.height = '100%';
+    vid.controls = false;
+    playerHost.appendChild(vid);
+
+    let ctaShown = false;
+    function revealCTA(){
+      if(ctaShown) return;
+      document.getElementById('cta').classList.add('show');
+      ctaShown = true;
+    }
+
+    const starter = document.getElementById('starter');
+    const playBtn = document.getElementById('playBtn');
+    playBtn.addEventListener('click', async () => {
+      starter.style.display = 'none';
+      try {
+        vid.muted = false;
+        await vid.play();
+        vid.controls = true;
+      } catch(e){
+        vid.muted = true;
+        try { await vid.play(); vid.controls = true; } catch(err) {}
+      }
+    });
+
+    if(CONFIG.showCtaAtSeconds > 0){
+      vid.addEventListener('timeupdate', () => {
+        if(!ctaShown && vid.currentTime >= CONFIG.showCtaAtSeconds){ revealCTA(); }
+      });
+    }
+
+    vid.addEventListener('ended', revealCTA);
+  </script>
+</body>
+</html>
