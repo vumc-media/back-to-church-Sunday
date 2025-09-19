@@ -5,12 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Back to Church Sunday — Versailles UMC</title>
   <meta name="description" content="You're invited! Join us this Sunday at Versailles UMC. Watch a short welcome from our pastors, then tap to see what's next." />
-  <meta property="og:title" content="Back to Church Sunday — Versailles UMC" />
-  <meta property="og:description" content="You're invited! Join us this Sunday at Versailles UMC." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="/assets/og-image.jpg" />
-  <meta property="og:url" content="https://visit.versaillesumc.org/backtochurch" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#0b5fff" />
   <style>
     :root{ --brand:#0b5fff; --bg:#0b1220; --text:#f6f8ff; --muted:#b7c2e1; --radius:18px; }
     html,body{height:100%}
@@ -20,17 +15,20 @@
       background: radial-gradient(1200px 500px at 50% -10%, #20305c66 0%, transparent 60%), linear-gradient(#0b1220,#0a1020);
       -webkit-font-smoothing:antialiased; line-height:1.6; display:flex; flex-direction:column; min-height:100vh
     }
-    header{padding:20px 16px 8px; display:flex; align-items:center; gap:12px; justify-content:center}
-    header img{height:40px; width:auto}
-    header .h{text-align:center}
+    header{padding:20px 16px 8px; text-align:center}
     h1{margin:0; font-size:clamp(1.25rem,1rem + 1.2vw,2rem); letter-spacing:.2px}
     .sub{color:var(--muted); font-size:.95rem; margin-top:2px}
     .wrap{width:min(1100px,92vw); margin:0 auto; padding:8px 0 36px; flex:1}
+
     .player-box{position:relative; aspect-ratio:16/9; background:#000; border-radius:var(--radius); overflow:hidden; box-shadow:0 10px 40px #0008}
     #player{position:absolute; inset:0}
     .start{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background: linear-gradient(180deg,#0008,#0004)}
-    .play{appearance:none; border:0; background:white; color:#000; width:70px; height:70px; border-radius:50%; display:grid; place-items:center; box-shadow:0 10px 30px #0008; cursor:pointer}
-    .play:after{content:""; width:0; height:0; border-left:18px solid #000; border-top:12px solid transparent; border-bottom:12px solid transparent; margin-left:4px}
+    .play{appearance:none; border:0; background:white; color:#000; width:74px; height:74px; border-radius:50%; display:grid; place-items:center; box-shadow:0 10px 30px #0008; cursor:pointer}
+    .play:after{content:""; width:0; height:0; border-left:20px solid #000; border-top:14px solid transparent; border-bottom:14px solid transparent; margin-left:4px}
+    .helper{margin:10px 2px 0; font-size:.9rem; color:#c9d5ff99; text-align:center}
+    .helper a{color:#dbe6ff; font-weight:600}
+
+    /* CTA overlay slides up from bottom of player */
     .cta{position:absolute; inset:auto 0 0 0; transform:translateY(100%); opacity:0; pointer-events:none; transition:.5s ease}
     .cta.show{transform:translateY(0); opacity:1; pointer-events:auto}
     .cta .card{
@@ -43,21 +41,17 @@
     .card h2{margin:0 0 4px; font-size:clamp(1.1rem,.9rem + .9vw,1.6rem)}
     .card p{margin:0 0 12px; color:var(--muted)}
     .buttons{display:grid; grid-template-columns:1fr; gap:10px}
-    .btn{display:flex; align-items:center; justify-content:center; gap:10px; text-decoration:none; color:white; font-weight:600; padding:14px 16px; border-radius:12px; border:1px solid #2a3a66; background:#14224a; transition:.2s ease; text-align:center}
+    .btn{display:flex; align-items:center; justify-content:center; gap:10px; text-decoration:none; color:white; font-weight:700; padding:14px 16px; border-radius:12px; border:1px solid #2a3a66; background:#14224a; transition:.2s ease; text-align:center}
     .btn:hover{transform:translateY(-1px); box-shadow:0 6px 18px #0005}
     .btn.primary{background:linear-gradient(180deg,var(--brand),#0a4fe0); border-color:#0a49d5}
+
     footer{padding:22px 16px 40px; text-align:center; color:#9fb0da; font-size:.9rem}
-    .helper{margin:10px 2px 0; font-size:.9rem; color:#c9d5ff99}
-    .helper a{color:#dbe6ff; font-weight:600}
   </style>
 </head>
 <body>
   <header>
-    <img src="/assets/vumc-logo.svg" alt="Versailles UMC" onerror="this.style.display='none'" />
-    <div class="h">
-      <h1>Back to Church Sunday</h1>
-      <div class="sub">A quick hello from our pastors — then tap to see what’s next at VUMC.</div>
-    </div>
+    <h1>Back to Church Sunday</h1>
+    <div class="sub">A quick hello from our pastors — then tap to see what’s next at VUMC.</div>
   </header>
 
   <main class="wrap">
@@ -73,7 +67,9 @@
         <div class="card">
           <h2>You're invited — what's next?</h2>
           <p>Plan your visit, explore groups, and see what’s happening at Versailles UMC.</p>
-          <div class="buttons" id="ctaButtons"></div>
+          <div class="buttons">
+            <a id="ctaBtn" class="btn primary" href="#" role="button" aria-label="See What's Happening">See What’s Happening</a>
+          </div>
         </div>
       </div>
     </section>
@@ -82,25 +78,22 @@
   </main>
 
   <footer>
-    <div class="disclaimer">Questions? <a href="mailto:info@versaillesumc.org" style="color:#dbe6ff">Email us</a>. Sunday services: 9:30a (Traditional) & 10:30a (Contemporary).</div>
+    <div>Questions? <a href="mailto:info@versaillesumc.org" style="color:#dbe6ff">Email us</a>. Sunday services: 9:30a (Traditional) & 10:30a (Contemporary).</div>
   </footer>
 
-  <!-- We’ll inject the YouTube iframe only after a user click (Safari-friendly) -->
   <script>
     // ====== CONFIG ======
     const CONFIG = {
-      youtubeId: "dP0UPvlghVo", // <-- replace with your video ID if needed
-      showCtaAtSeconds: 35,      // set 0 to show CTA immediately; keep >0 for timed reveal
-      buttons: [
-        { label: "See What's Happening", href: "https://connect.versaillesumc.org/back-to-church-sunday" }
-      ],
+      youtubeId: "dP0UPvlghVo",  // replace with your final video ID if needed
+      showCtaAtSeconds: 35,       // set 0 to show CTA immediately
+      ctaUrl: "https://connect.versaillesumc.org/back-to-church-sunday",
       defaultUtm: { utm_source: 'doorhanger', utm_medium: 'qr', utm_campaign: 'back_to_church_2025' }
     };
 
     // ====== UTILS ======
     function withParams(url, params){
       const u = new URL(url);
-      Object.entries(params).forEach(([k,v]) => { if(v!=null) u.searchParams.set(k, v) });
+      Object.entries(params).forEach(([k,v]) => { if(v!=null && v!=="") u.searchParams.set(k, v) });
       return u.toString();
     }
 
@@ -111,36 +104,29 @@
       utm_campaign: inbound.searchParams.get('utm_campaign') || CONFIG.defaultUtm.utm_campaign
     };
 
-    // Build CTA buttons
-    const btnWrap = document.getElementById('ctaButtons');
-    CONFIG.buttons.forEach(b => {
-      const a = document.createElement('a');
-      a.className = 'btn primary';
-      a.href = withParams(b.href, tracking);
-      a.textContent = b.label;
-      a.setAttribute('role','button');
-      a.setAttribute('aria-label', b.label);
-      btnWrap.appendChild(a);
-    });
+    // Wire CTA link with tracking
+    const ctaBtn = document.getElementById('ctaBtn');
+    ctaBtn.href = withParams(CONFIG.ctaUrl, tracking);
 
     // Helper link to open YouTube in new tab or app
     const ytHref = `https://youtu.be/${CONFIG.youtubeId}`;
     document.getElementById('ytOpen').href = ytHref;
 
-    // ====== Player Mount (on click) ======
+    // ====== Player Mount (on click only; Safari-friendly) ======
     const starter = document.getElementById('starter');
     const playBtn = document.getElementById('playBtn');
     const playerHost = document.getElementById('player');
-    let ctaShown=false, timerId=null;
+    const cta = document.getElementById('cta');
+    let ctaShown = false;
 
     function revealCTA(){
-      if(ctaShown) return;
-      document.getElementById('cta').classList.add('show');
-      ctaShown=true;
+      if (ctaShown) return;
+      cta.classList.add('show');
+      ctaShown = true;
     }
 
     function mountYouTube(){
-      // Use the privacy-enhanced youtube-nocookie domain
+      // Use privacy-enhanced domain, no autoplay (reduces cookie prompts)
       const iframe = document.createElement('iframe');
       iframe.src = `https://www.youtube-nocookie.com/embed/${CONFIG.youtubeId}?rel=0&modestbranding=1&playsinline=1`;
       iframe.title = 'YouTube video player';
@@ -151,15 +137,14 @@
       iframe.style.height='100%';
       playerHost.appendChild(iframe);
 
-      // Time-based CTA reveal (works even if we can't read YT player state)
-      if(Number(CONFIG.showCtaAtSeconds) > 0){
-        timerId = setTimeout(revealCTA, Number(CONFIG.showCtaAtSeconds) * 1000);
-      }
+      // Time-based CTA reveal
+      const secs = Number(CONFIG.showCtaAtSeconds || 0);
+      if (secs > 0) setTimeout(revealCTA, secs * 1000);
 
-      // Fallback: if the iframe hasn't loaded soon (strict cookie settings), open YouTube directly
-      let loaded=false;
+      // Fallback: if iframe doesn't load quickly (strict cookies), open YouTube directly
+      let loaded = false;
       const t = setTimeout(()=>{ if(!loaded){ window.open(ytHref,'_blank','noopener'); } }, 2500);
-      iframe.addEventListener('load', ()=>{ loaded=true; clearTimeout(t); });
+      iframe.addEventListener('load', ()=>{ loaded = true; clearTimeout(t); });
     }
 
     playBtn.addEventListener('click', ()=>{
@@ -167,8 +152,8 @@
       mountYouTube();
     });
 
-    // Safety: if you want CTA always visible on mobile regardless of playback, uncomment:
-    // document.getElementById('cta').classList.add('show');
+    // If you prefer the CTA always visible, uncomment:
+    // cta.classList.add('show');
   </script>
 </body>
 </html>
